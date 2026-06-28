@@ -16,9 +16,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    // 
+});
 
-Route::middleware(['auth', 'role:admin'])->get('/test-admin', function () {
-    return 'Solo el admin ve esto';
+Route::middleware(['auth', 'role:dueño'])->prefix('panel')->group(function () {
+    // 
 });
 
 require __DIR__.'/auth.php';
