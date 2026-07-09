@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Emprendimientos - Marketplace ITSE</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-light">
+
+    {{-- Navbar --}}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
+                <div class="bg-primary-gradient text-white rounded d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
+                    <span class="fw-bold">IT</span>
+                </div>
+                <span class="fw-bold text-primary">Marketplace ITSE</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ route('home') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="{{ route('emprendimientos.index') }}">Emprendimientos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ route('productos.index') }}">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{{ route('noticias.index') }}">Noticias</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="btn btn-link text-decoration-none">Mi panel</a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-link text-decoration-none me-2">Iniciar sesión</a>
+                        <a href="{{ route('register') }}" class="btn btn-primary-custom">Registrarse</a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5" style="margin-top: 70px;">
+        <div class="row">
+            {{-- Sidebar de filtros --}}
+            <aside class="col-lg-3 mb-4">
+                <x-filter-sidebar :categorias="$categorias" />
+            </aside>
+
+            {{-- Grid de emprendimientos --}}
+            <div class="col-lg-9">
+                <div class="mb-4">
+                    <h1 class="fw-bold mb-1">Emprendimientos</h1>
+                    <p class="text-muted">Explora todos los negocios de nuestra comunidad</p>
+                </div>
+
+                @if($emprendimientos->count() > 0)
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        @foreach($emprendimientos as $emprendimiento)
+                            <div class="col">
+                                <x-emprendimiento-card :emprendimiento="$emprendimiento" />
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $emprendimientos->links() }}
+                    </div>
+                @else
+                    <div class="card border-0 shadow p-5 text-center">
+                        <div class="fs-1 mb-3">🔍</div>
+                        <h3 class="fw-bold mb-2">No se encontraron emprendimientos</h3>
+                        <p class="text-muted">Intenta ajustar los filtros de búsqueda para encontrar lo que buscas.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </main>
+
+    {{-- Footer --}}
+    <footer class="bg-dark-gradient text-white py-4">
+        <div class="container text-center">
+            <div class="d-flex align-items-center justify-content-center mb-2">
+                <div class="bg-primary-gradient text-white rounded d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
+                    <span class="fw-bold">IT</span>
+                </div>
+                <span class="fw-bold">Marketplace ITSE</span>
+            </div>
+            <small class="text-white-50">&copy; {{ date('Y') }} Marketplace ITSE Panamá. Todos los derechos reservados.</small>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -17,6 +17,7 @@ class Producto extends Model
         'precio',
         'imagen',
         'disponible',
+        'es_combo',
     ];
 
     protected function casts(): array
@@ -24,6 +25,7 @@ class Producto extends Model
         return [
             'precio' => 'decimal:2',
             'disponible' => 'boolean',
+            'es_combo' => 'boolean',
         ];
     }
 
