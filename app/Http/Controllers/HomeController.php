@@ -26,7 +26,7 @@ class HomeController extends Controller
         $productosRecientes = Producto::where('disponible', true)
             ->with('emprendimiento')
             ->orderBy('created_at', 'desc')
-            ->take(8)
+            ->take(10)
             ->get();
 
         $categorias = Categoria::all();

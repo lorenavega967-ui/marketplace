@@ -21,7 +21,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto align-items-center">
                     <li class="nav-item">
                         <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'home' ? 'active' : '' }}" href="{{ route('home') }}">Inicio</a>
                     </li>
@@ -34,13 +34,17 @@
                     <li class="nav-item">
                         <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'noticias.index' ? 'active' : '' }}" href="{{ route('noticias.index') }}">Noticias</a>
                     </li>
+                    @guest
+                        <li class="nav-item ms-lg-3">
+                            <a href="{{ route('solicitud-emprendedor.create') }}" class="btn btn-primary-custom py-2 px-3 text-white" style="font-size: 0.95rem;">¿Quieres emprender?</a>
+                        </li>
+                    @endguest
                 </ul>
                 <div class="d-flex align-items-center">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="btn btn-link text-decoration-none">Mi panel</a>
+                        <a href="{{ url('/dashboard') }}" class="btn btn-primary-custom">Mi panel</a>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-link text-decoration-none me-2">Iniciar sesión</a>
-                        <a href="{{ route('register') }}" class="btn btn-primary-custom">Registrarse</a>
+                        <a href="{{ route('login') }}" class="btn btn-primary-custom">Iniciar sesión</a>
                     @endauth
                 </div>
             </div>
@@ -48,70 +52,63 @@
     </nav>
 
     {{-- Hero Section --}}
-    <header class="bg-primary-gradient text-white hero-pattern pt-5 pb-5" style="margin-top: 70px;">
-        <div class="container py-5">
-            <div class="row justify-content-center text-center">
-                <div class="col-lg-8">
-                    <h1 class="display-3 fw-bold mb-4">
-                        Emprendimientos<br>
-                        <span class="text-white-50">ITSE Panamá</span>
-                    </h1>
-                    <p class="lead text-white-75 mb-4">
-                        Descubre los negocios y productos de estudiantes y emprendedores invitados, todo en un solo lugar.
-                    </p>
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="{{ route('emprendimientos.index') }}" class="btn btn-light text-primary fw-bold px-4">
-                            Ver Emprendimientos
-                        </a>
-                        <a href="{{ route('productos.index') }}" class="btn btn-outline-light fw-bold px-4">
-                            Ver Productos
-                        </a>
+    <header class="position-relative" style="margin-top: 70px; min-height: calc(100vh - 70px); background: var(--bg-lighter);">
+        <div class="container position-relative" style="z-index: 2; min-height: calc(100vh - 70px); display: flex; align-items: center;">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="slide-up">
+                        <h1 class="display-3 fw-bold mb-4" style="color: var(--text-primary); line-height: 1.2;">
+                            Emprendimientos<br>
+                            <span style="color: var(--itse-yellow);">ITSE Panamá</span>
+                        </h1>
+                        <p class="lead mb-5" style="color: var(--text-secondary); font-size: 1.25rem; line-height: 1.75;">
+                            Descubre los negocios y productos de estudiantes y emprendedores invitados, todo en un solo lugar. Conecta, innova y crece con nuestra comunidad emprendedora.
+                        </p>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="{{ route('emprendimientos.index') }}" class="btn btn-hero-circle">
+                                Ver Emprendedores
+                            </a>
+                            <a href="{{ route('productos.index') }}" class="btn btn-hero-circle">
+                                Ver Productos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="hero-collage-container">
+                        <!-- Glow effect under the collage -->
+                        <div class="hero-collage-bg-glow"></div>
+
+                        <!-- Overlapping images -->
+                        <div class="hero-collage-item hero-collage-item-1">
+                            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=500&fit=crop" alt="Estudiantes">
+                        </div>
+                        <div class="hero-collage-item hero-collage-item-2">
+                            <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=360&h=440&fit=crop" alt="Emprendedores">
+                        </div>
+                        <div class="hero-collage-item hero-collage-item-3">
+                            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=320&h=400&fit=crop" alt="Colaboración">
+                        </div>
+                        <div class="hero-collage-item hero-collage-item-4">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=280&h=360&fit=crop" alt="Innovación">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="container py-5">
-        {{-- Noticias Section --}}
-        @if($noticias->count() > 0)
-            <section class="mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="fw-bold mb-1">Noticias y Eventos</h2>
-                        <p class="text-muted">Mantente informado sobre las últimas novedades</p>
-                    </div>
-                    <a href="{{ route('noticias.index') }}" class="btn btn-outline-primary">
-                        Ver todas <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    @foreach($noticias as $noticia)
-                        <div class="col">
-                            <x-noticia-card :noticia="$noticia" />
-                        </div>
-                    @endforeach
-                </div>
-            </section>
-        @endif
-
+    <main class="container itse-section">
         {{-- Emprendimientos Destacados --}}
         @if($emprendimientosDestacados->count() > 0)
-            <section class="mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="fw-bold mb-1">Emprendimientos Destacados</h2>
-                        <p class="text-muted">Conoce los negocios más destacados de nuestra comunidad</p>
-                    </div>
-                    <a href="{{ route('emprendimientos.index') }}" class="btn btn-outline-primary">
-                        Ver todos <i class="bi bi-arrow-right"></i>
-                    </a>
+            <section class="mb-5 slide-up">
+                <div class="mb-4">
+                    <h2 class="itse-section-title">Emprendimientos Destacados</h2>
+                    <p class="itse-section-subtitle">Conoce los negocios más destacados de nuestra comunidad</p>
                 </div>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="itse-grid">
                     @foreach($emprendimientosDestacados as $emprendimiento)
-                        <div class="col">
-                            <x-emprendimiento-card :emprendimiento="$emprendimiento" />
-                        </div>
+                        <x-emprendimiento-card :emprendimiento="$emprendimiento" />
                     @endforeach
                 </div>
             </section>
@@ -119,95 +116,176 @@
 
         {{-- Productos Recientes --}}
         @if($productosRecientes->count() > 0)
-            <section class="mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="fw-bold mb-1">Productos Recientes</h2>
-                        <p class="text-muted">Explora los últimos productos agregados</p>
-                    </div>
-                    <a href="{{ route('productos.index') }}" class="btn btn-outline-primary">
-                        Ver todos <i class="bi bi-arrow-right"></i>
-                    </a>
+            <section class="mb-5 slide-up">
+                <div class="mb-4">
+                    <h2 class="itse-section-title">Productos Recientes</h2>
+                    <p class="itse-section-subtitle">Explora los últimos productos agregados</p>
                 </div>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-                    @foreach($productosRecientes as $producto)
-                        <div class="col">
-                            <x-producto-card :producto="$producto" />
-                        </div>
-                    @endforeach
-                </div>
-            </section>
-        @endif
-
-        {{-- Categorías --}}
-        @if($categorias->count() > 0)
-            <section class="mb-5">
-                <div class="text-center mb-4">
-                    <h2 class="fw-bold mb-1">Explora por Categoría</h2>
-                    <p class="text-muted">Encuentra lo que buscas fácilmente</p>
-                </div>
-                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
-                    @foreach($categorias as $categoria)
-                        <div class="col">
-                            <a href="{{ route('emprendimientos.index', ['categoria' => $categoria->id]) }}"
-                               class="card card-hover text-center text-decoration-none border-0 shadow h-100">
-                                <div class="card-body">
-                                    <div class="fs-2 mb-2">📂</div>
-                                    <h6 class="fw-bold text-dark">{{ $categoria->nombre }}</h6>
+                
+                <div class="product-carousel-wrapper position-relative">
+                    <button class="carousel-btn-prev" id="productosPrevBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="product-carousel-track-container overflow-hidden">
+                        <div class="product-carousel-track d-flex gap-3" id="productosCarouselTrack">
+                            @foreach($productosRecientes as $producto)
+                                <div class="product-carousel-item flex-shrink-0">
+                                    <a href="{{ route('productos.index') }}" class="product-card text-decoration-none">
+                                        <div class="product-card-image-wrapper">
+                                            @if($producto->imagen)
+                                                <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" class="product-card-image">
+                                            @else
+                                                <div class="bg-primary-gradient d-flex align-items-center justify-content-center product-card-image">
+                                                    <span class="text-white fs-1">📦</span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="product-card-content">
+                                            <div class="product-card-category">
+                                                {{ $producto->emprendimiento->categoria->nombre ?? 'Sin categoría' }}
+                                            </div>
+                                            <h5 class="product-card-name">{{ $producto->nombre }}</h5>
+                                            <div class="product-card-price">${{ number_format($producto->precio, 2) }}</div>
+                                            <div class="product-card-emprendedor">
+                                                {{ $producto->emprendimiento->nombre }}
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                            </a>
+                            @endforeach
                         </div>
-                    @endforeach
+                    </div>
+                    
+                    <button class="carousel-btn-next" id="productosNextBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ route('productos.index') }}" class="btn btn-itse-pill">
+                        Ver todos
+                    </a>
                 </div>
             </section>
         @endif
     </main>
 
     {{-- Footer --}}
-    <footer class="bg-dark-gradient text-white py-5">
+    <footer id="contacto" class="itse-footer">
         <div class="container">
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-5">
                 <div>
-                    <div class="d-flex align-items-center mb-3">
+                    <div class="d-flex align-items-center mb-4">
                         <div class="bg-primary-gradient text-white rounded d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
                             <span class="fw-bold">IT</span>
                         </div>
-                        <span class="fw-bold">Marketplace ITSE</span>
+                        <span class="fw-bold fs-5">Marketplace ITSE</span>
                     </div>
-                    <p class="text-white-50">
-                        Plataforma para emprendedores del Instituto Tecnológico Superior del Este. Conectando talento con oportunidades.
+                    <p class="itse-footer-contact" style="line-height: 1.75;">
+                        Plataforma oficial de emprendimiento del Instituto Técnico Superior de Panamá. Conectamos estudiantes y emprendedores con oportunidades reales.
                     </p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#" class="itse-footer-link" style="font-size: 1.5rem;"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="itse-footer-link" style="font-size: 1.5rem;"><i class="bi bi-whatsapp"></i></a>
+                    </div>
                 </div>
                 <div>
-                    <h5 class="fw-bold mb-3 text-primary">Enlaces Rápidos</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{{ route('home') }}" class="text-white-50 text-decoration-none hover:text-white">Inicio</a></li>
-                        <li class="mb-2"><a href="{{ route('emprendimientos.index') }}" class="text-white-50 text-decoration-none hover:text-white">Emprendimientos</a></li>
-                        <li class="mb-2"><a href="{{ route('productos.index') }}" class="text-white-50 text-decoration-none hover:text-white">Productos</a></li>
-                        <li class="mb-2"><a href="{{ route('noticias.index') }}" class="text-white-50 text-decoration-none hover:text-white">Noticias</a></li>
-                    </ul>
+                    <h5 class="itse-footer-title">Enlaces Rápidos</h5>
+                    <a href="{{ route('home') }}" class="itse-footer-link">Inicio</a>
+                    <a href="{{ route('productos.index') }}" class="itse-footer-link">Productos</a>
+                    <a href="{{ route('emprendimientos.index') }}" class="itse-footer-link">Emprendedores</a>
+                    <a href="{{ route('noticias.index') }}" class="itse-footer-link">Noticias</a>
+                    <a href="#categorias" class="itse-footer-link">Categorías</a>
                 </div>
                 <div>
-                    <h5 class="fw-bold mb-3 text-primary">Contacto</h5>
-                    <p class="text-white-50 mb-3">
-                        ¿Tienes preguntas? Contáctanos a través de la administración del ITSE.
+                    <h5 class="itse-footer-title">Recursos</h5>
+                    <a href="#" class="itse-footer-link">Sobre Nosotros</a>
+                </div>
+                <div>
+                    <h5 class="itse-footer-title">Contacto</h5>
+                    <p class="itse-footer-contact">
+                        <span style="color: var(--itse-yellow);">📍</span> Ciudad de Panamá, Panamá
                     </p>
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-primary btn-sm rounded-circle">
-                            <i class="bi bi-twitter-x"></i>
-                        </a>
-                        <a href="#" class="btn btn-primary btn-sm rounded-circle">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
-            <hr class="border-secondary my-4">
-            <div class="text-center text-white-50">
-                <small>&copy; {{ date('Y') }} Marketplace ITSE Panamá. Todos los derechos reservados.</small>
+            <div class="itse-footer-bottom">
+                <p>&copy; {{ date('Y') }} Marketplace ITSE Panamá. Todos los derechos reservados.</p>
+                <p class="mt-2">Desarrollado con ❤️ para la comunidad emprendedora del ITSE</p>
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            // Product Carousel Logic
+            const track = document.getElementById('productosCarouselTrack');
+            const prevBtn = document.getElementById('productosPrevBtn');
+            const nextBtn = document.getElementById('productosNextBtn');
+            
+            if (track && prevBtn && nextBtn) {
+                let index = 0;
+                
+                function getItemsPerSlide() {
+                    const width = window.innerWidth;
+                    if (width > 1200) return 4;
+                    if (width > 992) return 3;
+                    if (width > 768) return 2;
+                    return 1;
+                }
+                
+                function updateCarousel() {
+                    const itemsPerSlide = getItemsPerSlide();
+                    const items = track.children;
+                    const maxIndex = Math.max(0, items.length - itemsPerSlide);
+                    if (index > maxIndex) index = maxIndex;
+                    if (index < 0) index = 0;
+                    
+                    if (items.length > 0) {
+                        const itemWidth = items[0].getBoundingClientRect().width;
+                        const gap = 12; // matches CSS gap-3
+                        const amountToMove = index * (itemWidth + gap);
+                        track.style.transform = `translateX(-${amountToMove}px)`;
+                    }
+                    
+                    // Update opacity and interactivity of buttons
+                    prevBtn.style.opacity = index === 0 ? '0.3' : '1';
+                    prevBtn.style.pointerEvents = index === 0 ? 'none' : 'auto';
+                    nextBtn.style.opacity = index === maxIndex ? '0.3' : '1';
+                    nextBtn.style.pointerEvents = index === maxIndex ? 'none' : 'auto';
+                }
+                
+                prevBtn.addEventListener('click', () => {
+                    index--;
+                    updateCarousel();
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    index++;
+                    updateCarousel();
+                });
+                
+                window.addEventListener('resize', updateCarousel);
+                // Initial setup delay to ensure elements are sized
+                setTimeout(updateCarousel, 150);
+            }
+        });
+    </script>
 
 </body>
 </html>

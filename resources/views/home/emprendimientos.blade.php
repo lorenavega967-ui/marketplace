@@ -21,26 +21,30 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ route('home') }}">Inicio</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'home' ? 'active' : '' }}" href="{{ route('home') }}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="{{ route('emprendimientos.index') }}">Emprendimientos</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'emprendimientos.index' ? 'active' : '' }}" href="{{ route('emprendimientos.index') }}">Emprendimientos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ route('productos.index') }}">Productos</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'productos.index' ? 'active' : '' }}" href="{{ route('productos.index') }}">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ route('noticias.index') }}">Noticias</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'noticias.index' ? 'active' : '' }}" href="{{ route('noticias.index') }}">Noticias</a>
                     </li>
+                    @guest
+                        <li class="nav-item ms-lg-3">
+                            <a href="{{ route('solicitud-emprendedor.create') }}" class="btn btn-primary-custom py-2 px-3 text-white" style="font-size: 0.95rem;">¿Quieres emprender?</a>
+                        </li>
+                    @endguest
                 </ul>
                 <div class="d-flex align-items-center">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="btn btn-link text-decoration-none">Mi panel</a>
+                        <a href="{{ url('/dashboard') }}" class="btn btn-primary-custom">Mi panel</a>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-link text-decoration-none me-2">Iniciar sesión</a>
-                        <a href="{{ route('register') }}" class="btn btn-primary-custom">Registrarse</a>
+                        <a href="{{ route('login') }}" class="btn btn-primary-custom">Iniciar sesión</a>
                     @endauth
                 </div>
             </div>

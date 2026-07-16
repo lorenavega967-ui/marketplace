@@ -21,52 +21,54 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ route('home') }}">Inicio</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'home' ? 'active' : '' }}" href="{{ route('home') }}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ route('emprendimientos.index') }}">Emprendimientos</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'emprendimientos.index' ? 'active' : '' }}" href="{{ route('emprendimientos.index') }}">Emprendimientos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ route('productos.index') }}">Productos</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'productos.index' ? 'active' : '' }}" href="{{ route('productos.index') }}">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="{{ route('noticias.index') }}">Noticias</a>
+                        <a class="nav-link nav-link-custom {{ request()->route()->getName() === 'noticias.index' ? 'active' : '' }}" href="{{ route('noticias.index') }}">Noticias</a>
                     </li>
+                    @guest
+                        <li class="nav-item ms-lg-3">
+                            <a href="{{ route('solicitud-emprendedor.create') }}" class="btn btn-primary-custom py-2 px-3 text-white" style="font-size: 0.95rem;">¿Quieres emprender?</a>
+                        </li>
+                    @endguest
                 </ul>
                 <div class="d-flex align-items-center">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="btn btn-link text-decoration-none">Mi panel</a>
+                        <a href="{{ url('/dashboard') }}" class="btn btn-primary-custom">Mi panel</a>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-link text-decoration-none me-2">Iniciar sesión</a>
-                        <a href="{{ route('register') }}" class="btn btn-primary-custom">Registrarse</a>
+                        <a href="{{ route('login') }}" class="btn btn-primary-custom">Iniciar sesión</a>
                     @endauth
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="container py-5" style="margin-top: 70px;">
-        <div class="mb-4">
-            <h1 class="fw-bold mb-1">Noticias y Eventos</h1>
-            <p class="text-muted">Mantente informado sobre las últimas novedades del ITSE</p>
+    <main class="container itse-section" style="margin-top: 70px;">
+        <div class="mb-5">
+            <h1 class="itse-section-title">Noticias</h1>
+            <p class="itse-section-subtitle">Mantente informado sobre eventos, actividades y novedades de nuestra comunidad de emprendedores.</p>
         </div>
 
         @if($noticias->count() > 0)
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div class="itse-grid">
                 @foreach($noticias as $noticia)
-                    <div class="col">
-                        <x-noticia-card :noticia="$noticia" />
-                    </div>
+                    <x-noticia-card :noticia="$noticia" />
                 @endforeach
             </div>
 
-            <div class="mt-4">
+            <div class="mt-5">
                 {{ $noticias->links() }}
             </div>
         @else
-            <div class="card border-0 shadow p-5 text-center">
+            <div class="itse-card p-5 text-center">
                 <div class="fs-1 mb-3">📰</div>
                 <h3 class="fw-bold mb-2">No hay noticias publicadas</h3>
                 <p class="text-muted">Mantente atento, pronto habrá nuevas publicaciones.</p>

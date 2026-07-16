@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SolicitudEmprendedorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -13,6 +14,9 @@ Route::get('/emprendimiento/{slug}', [HomeController::class, 'showEmprendimiento
 
 Route::get('/noticias', [NoticiaController::class, 'index'])->name('noticias.index');
 Route::get('/noticias/{slug}', [NoticiaController::class, 'show'])->name('noticias.show');
+
+Route::get('/solicitud-emprendedor', [SolicitudEmprendedorController::class, 'create'])->name('solicitud-emprendedor.create');
+Route::post('/solicitud-emprendedor', [SolicitudEmprendedorController::class, 'store'])->name('solicitud-emprendedor.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
